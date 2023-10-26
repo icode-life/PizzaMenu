@@ -76,21 +76,30 @@ const Menu = () => {
         <main className="menu">
             <h2>Our Menu:</h2>
             {stockAvailable > 0 ? (
-            <ul className="pizzas">{pizzaData.map(pizza => <Pizza pizzaObj={pizza} key={pizza.name} />)}</ul> 
-            ) : (
-            <p>Sorry, we're out of stock for the moment, please come back later</p>)}
+              <> {/*this <> represent teh beginning of a jsx fragment. 
+              it ends with </>. and is used to wrap several divs in a parent with adding a div which might mess up the css applied.
+              Now, if for some reason we iterate on an array with map, we would need a key,
+              then the fragments has to be fully named <React.Fragment key="..."></React.Fragment> */}
+              <p>
+                Authentic Italian cuisine. 6 creative dishesto choose from. 
+                All from our stone oven, all organic, all delicious.
+              </p>
+              <ul className="pizzas">{pizzaData.map(pizza => <Pizza pizzaObj={pizza} key={pizza.name} />)}</ul> </>
+              ) : (
+              <p>Sorry, we're out of stock for the moment, please come back later</p>)}
         </main>);
 }
 
 // props are destructured here so it's shorter to call the different props in jsx
 const Pizza = ({pizzaObj}) => {
     return (
-        <li className="pizza">
+        <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}> {/**here we conditionally add a classname if the pizza is sold out.
+         *  so it renders the grey-out effect thanks to the added css */}
             <img src={pizzaObj.photoName} alt={pizzaObj.name}/>
             <div>
               <h3>{pizzaObj.name}</h3>
               <p>{pizzaObj.ingredients}</p>
-              <span>price: {pizzaObj.price + 2}</span>
+              {pizzaObj.soldOut ? <span>"SOLD OUT"</span> : <span>price: {pizzaObj.price + 2}</span>}
             </div>
         </li>
     );
